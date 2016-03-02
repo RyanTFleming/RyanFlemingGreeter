@@ -24,11 +24,8 @@ public class GreeterActivityTests extends ActivityInstrumentationTestCase2<Greet
 
     public void testGreet() {
         final GreeterActivity activity = this.getActivity();
-
         this.clickGreetButton(activity);
-
         TextView greetMessage = (TextView) activity.findViewById(R.id.message_text_view);
-
         String actualText = greetMessage.getText().toString();
         assertEquals("Hello, Jake!", actualText);
     }
@@ -49,12 +46,25 @@ public class GreeterActivityTests extends ActivityInstrumentationTestCase2<Greet
         assertTrue(reverseButton.isEnabled());
     }
 
+    public void testTextReversedAfterReverseButtonClick() {
+        GreeterActivity activity = this.getActivity();
+        this.clickGreetButton(activity);
+
+        Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
+        TouchUtils.clickView(this, reverseButton);
+
+        TextView greetMessage = (TextView) activity.findViewById(R.id.message_text_view);
+        String actualText = greetMessage.getText().toString();
+        assertEquals("!ekaJ ,olleH", actualText);
+
+    }
 
     private void clickGreetButton(GreeterActivity activity) {
         final EditText nameEditText = (EditText) activity.findViewById(R.id.greet_edit_text);
         getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
+                nameEditText.clearFocus();
                 nameEditText.requestFocus();
             }
         });

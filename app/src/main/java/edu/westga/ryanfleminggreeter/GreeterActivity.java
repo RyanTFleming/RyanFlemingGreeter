@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class GreeterActivity extends AppCompatActivity {
 
     @Override
@@ -53,6 +55,11 @@ public class GreeterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onClick listener for the greet button. builds the greeting and
+     * displays it
+     * @param view - the button
+     */
     public void didTapGreetButton(View view) {
         EditText greetEditText = (EditText) findViewById(R.id.greet_edit_text);
         String name = greetEditText.getText().toString();
@@ -61,5 +68,18 @@ public class GreeterActivity extends AppCompatActivity {
         messageTextView.setText(greeting);
         Button reverseButton = (Button) findViewById(R.id.reverse_button);
         reverseButton.setEnabled(true);
+    }
+
+    /**
+     * onClick listenter for the reverse button. Reverses the greeting text
+     * @param view - the button
+     */
+    public void didTapReverseButton(View view) {
+        TextView messageTextView = (TextView) findViewById(R.id.message_text_view);
+        String greeting = messageTextView.getText().toString();
+        StringBuilder greetingBuilder = new StringBuilder(greeting);
+        greetingBuilder.reverse();
+        String reverseGreeting = greetingBuilder.toString();
+        messageTextView.setText(reverseGreeting);
     }
 }
