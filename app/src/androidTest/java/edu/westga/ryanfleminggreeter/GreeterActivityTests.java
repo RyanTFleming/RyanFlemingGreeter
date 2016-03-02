@@ -6,8 +6,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * Test class for the GreeterActivity
  *
@@ -16,7 +14,7 @@ import org.w3c.dom.Text;
 public class GreeterActivityTests extends ActivityInstrumentationTestCase2<GreeterActivity> {
 
     public GreeterActivityTests() {
-     super(GreeterActivity.class);
+        super(GreeterActivity.class);
     }
 
     public void testActivityExists() {
@@ -25,16 +23,19 @@ public class GreeterActivityTests extends ActivityInstrumentationTestCase2<Greet
     }
 
     public void testGreet() {
-        GreeterActivity activity = getActivity();
+        final GreeterActivity activity = this.getActivity();
         final EditText nameEditText = (EditText) activity.findViewById(R.id.greet_edit_text);
         getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
+                nameEditText.clearFocus();
                 nameEditText.requestFocus();
             }
         });
         getInstrumentation().waitForIdleSync();
         getInstrumentation().sendStringSync("Jake");
+        getInstrumentation().waitForIdleSync();
+
 
         Button greetButton = (Button) activity.findViewById(R.id.greet_button);
         TouchUtils.clickView(this, greetButton);
@@ -43,6 +44,16 @@ public class GreeterActivityTests extends ActivityInstrumentationTestCase2<Greet
 
         String actualText = greetMessage.getText().toString();
         assertEquals("Hello, Jake!", actualText);
-
     }
+
+    /**
+     * Tests that the Reverse button is disabled before the Greet button is clicked
+     */
+    public void testReverseButtonDisabled() {
+        GreeterActivity activity = this.getActivity();
+        Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
+        assertFalse(reverseButton.isEnabled());
+    }
+
+
 }
